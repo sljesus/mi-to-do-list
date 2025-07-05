@@ -2,21 +2,21 @@ import React from "react";
 import TodoItem from "./TodoItem";
 
 interface Todo {
-  id: number;
+  id: string;
   text: string;
   completed: boolean;
 }
 
 interface TodoListProps {
   todos: Todo[];
-  editId: number | null;
+  editId: string | null;
   editText: string;
   onEditChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSaveEdit: (id: number) => void;
+  onSaveEdit: (id: string) => void;
   onCancelEdit: () => void;
-  onStartEdit: (id: number, text: string) => void;
-  onToggle: (id: number) => void;
-  onDelete: (id: number) => void;
+  onStartEdit: (id: string, text: string) => void;
+  onToggle: (id: string) => void;
+  onDelete: (id: string) => void;
 }
 
 const TodoList: React.FC<TodoListProps> = ({
@@ -39,11 +39,11 @@ const TodoList: React.FC<TodoListProps> = ({
           isEditing={editId === todo.id}
           editText={editText}
           onEditChange={onEditChange}
-          onSaveEdit={() => onSaveEdit(todo.id)}
+          onSaveEdit={() => onSaveEdit(String(todo.id))}
           onCancelEdit={onCancelEdit}
-          onStartEdit={() => onStartEdit(todo.id, todo.text)}
-          onToggle={() => onToggle(todo.id)}
-          onDelete={() => onDelete(todo.id)}
+          onStartEdit={() => onStartEdit(String(todo.id), todo.text)}
+          onToggle={() => onToggle(String(todo.id))}
+          onDelete={() => onDelete(String(todo.id))}
         />
       ))}
     </ul>

@@ -1,9 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import TodoList from "./TodoList";
+import { db } from "./firebaseConfig";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  updateDoc,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  query,
+  orderBy,
+} from "firebase/firestore";
 
 interface Todo {
-  id: number;
+  id: string;
   text: string;
   completed: boolean;
 }
@@ -11,40 +23,48 @@ interface Todo {
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [input, setInput] = useState("");
-  const [editId, setEditId] = useState<number | null>(null);
+  const [editId, setEditId] = useState<string | null>(null);
   const [editText, setEditText] = useState("");
 
-  const addTodo = (e: React.FormEvent) => {
+  // Leer tareas en tiempo real
+  useEffect(() => {
+    const q = query(collection(db, "todos"), orderBy("text"));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      setTodos(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as Todo[]
+      );
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const addTodo = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
-    setTodos([
-      ...todos,
-      { id: Date.now(), text: input.trim(), completed: false },
-    ]);
+    await addDoc(collection(db, "todos"), {
+      text: input.trim(),
+      completed: false,
+    });
     setInput("");
   };
 
-  const toggleTodo = (id: number) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
+  const toggleTodo = async (id: string, completed: boolean) => {
+    await updateDoc(doc(db, "todos", id), { completed: !completed });
   };
 
-  const deleteTodo = (id: number) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+  const deleteTodo = async (id: string) => {
+    await deleteDoc(doc(db, "todos", id));
   };
 
-  const startEdit = (id: number, text: string) => {
+  const startEdit = (id: string, text: string) => {
     setEditId(id);
     setEditText(text);
   };
 
-  const saveEdit = (id: number) => {
-    setTodos(
-      todos.map((todo) => (todo.id === id ? { ...todo, text: editText } : todo))
-    );
+  const saveEdit = async (id: string) => {
+    await updateDoc(doc(db, "todos", id), { text: editText });
     setEditId(null);
     setEditText("");
   };
@@ -84,7 +104,10 @@ function App() {
           onSaveEdit={saveEdit}
           onCancelEdit={cancelEdit}
           onStartEdit={startEdit}
-          onToggle={toggleTodo}
+          onToggle={(id) => {
+            const todo = todos.find((t) => t.id === id);
+            if (todo) toggleTodo(id, todo.completed);
+          }}
           onDelete={deleteTodo}
         />
       </div>

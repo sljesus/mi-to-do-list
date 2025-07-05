@@ -1,7 +1,8 @@
 import React from "react";
 
+// Asegúrate de que el tipo Todo tenga id: string
 interface Todo {
-  id: number;
+  id: string;
   text: string;
   completed: boolean;
 }
