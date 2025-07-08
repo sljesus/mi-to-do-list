@@ -83,40 +83,48 @@ body {
 
 .menu-bar {
   width: 100%;
-  background: #111;
-  color: #ffd700;
+  background: #fff;
+  color: #232323;
   padding: 18px 0 12px 0;
   margin-bottom: 32px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-  text-align: center;
+  text-align: left;
   position: static;
   box-sizing: border-box;
   animation: fadeInUp 1.5s 0.2s cubic-bezier(0.23, 1, 0.32, 1) backwards;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
 }
 
 .menu-bar h1 {
   margin: 0;
   font-size: 2rem;
   letter-spacing: 1px;
-  color: #ffd700;
+  color: #232323;
   display: inline-block;
+  vertical-align: middle;
 }
 
 .menu-bar img {
   vertical-align: middle;
-  margin-right: 12px;
   height: 40px;
+  margin: 0;
+  padding-left: 24px;
+  padding-right: 24px;
 }
 
 div.todo-app {
   width: 100%;
   max-width: 420px;
-  background: #181818;
+  background: #fff;
   border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
   padding: 32px 16px 24px 16px;
   font-family: "Segoe UI", Arial, sans-serif;
-  color: #ffd700;
+  color: #232323;
   box-sizing: border-box;
   margin: 0 auto;
   animation: fadeInUp 1.5s 0.4s cubic-bezier(0.23, 1, 0.32, 1) backwards;
@@ -124,7 +132,7 @@ div.todo-app {
 
 .todo-app h1 {
   text-align: center;
-  color: #3b3b3b;
+  color: #232323;
   margin-bottom: 24px;
 }
 
@@ -178,11 +186,12 @@ div.todo-app {
 .todo-list li {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
+  gap: 8px;
   padding: 10px 0;
   border-bottom: 1px solid #f1f1f1;
   font-size: 1.05rem;
-  color: #ffd700;
+  color: #232323;
   background: transparent;
   animation: fadeInUp 1s cubic-bezier(0.23, 1, 0.32, 1);
 }
@@ -197,6 +206,7 @@ div.todo-app {
 
 .todo-list span {
   flex: 1;
+  text-align: left;
   transition: color 0.2s;
 }
 
